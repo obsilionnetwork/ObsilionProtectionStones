@@ -277,7 +277,7 @@ public abstract class PSRegion {
      * Sells the region to a player at the price listed.
      * @param player player to transfer the region to
      */
-    public abstract void sell(UUID player);
+    public abstract void sell(Player player);
 
     /**
      * @return get the stage of the renting process
