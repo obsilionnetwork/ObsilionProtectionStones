@@ -203,6 +203,8 @@ public enum PSL {
     BUY_STOP_SELL("buy.stop_sell", ChatColor.GRAY + "The region is now not for sale."),
     BUY_SOLD_BUYER("buy.sold_buyer", ChatColor.GRAY + "Bought region " + ChatColor.AQUA + "%region%" + ChatColor.GRAY + " for " + ChatColor.AQUA + "$%price%" + ChatColor.GRAY + " from " + ChatColor.AQUA + "%player%" + ChatColor.GRAY + "."),
     BUY_SOLD_SELLER("buy.sold_seller", ChatColor.GRAY + "Sold region " + ChatColor.AQUA + "%region%" + ChatColor.GRAY + " for " + ChatColor.AQUA + "$%price%" + ChatColor.GRAY + " to " + ChatColor.AQUA + "%player%" + ChatColor.GRAY + "."),
+    BUY_BUYER_IS_SELLER("buy.buyer_is_seller", ChatColor.RED + "You cannot buy your own region!"),
+    BUY_SOLD_CANCELLED("buy.sold_cancelled", ChatColor.GRAY + "The sale of region " + ChatColor.AQUA + "%region%" + ChatColor.GRAY + " has been cancelled."),
 
     // ps sell
     SELL_HELP("sell.help", ChatColor.AQUA + "> " + ChatColor.GRAY + "/ps sell [price|stop]"),
