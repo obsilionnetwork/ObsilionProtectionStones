@@ -20,7 +20,6 @@ import dev.espi.protectionstones.PSPlayer;
 import dev.espi.protectionstones.PSRegion;
 import dev.espi.protectionstones.ProtectionStones;
 import dev.espi.protectionstones.utils.LimitUtil;
-import dev.espi.protectionstones.utils.UUIDCache;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -79,6 +78,11 @@ public class ArgBuySell implements PSCommandArg {
             if ((!r.getTypeOptions().permission.equals("") && !p.hasPermission(r.getTypeOptions().permission)))
                 return PSL.msg(p, PSL.NO_PERMISSION_REGION_TYPE.msg());
 
+            // We have to check equality with equals because the uuids are different instances
+            if (r.getLandlord().equals(p.getUniqueId())) {
+                return PSL.msg(p, PSL.BUY_BUYER_IS_SELLER.msg());
+            }
+
             // check if player reached region limit
             if (!LimitUtil.check(p, r.getTypeOptions()))
                 return PSL.msg(p, PSL.REACHED_REGION_LIMIT.msg().replace("%limit%", "" + PSPlayer.fromPlayer(p).getGlobalRegionLimits()));
@@ -86,19 +90,7 @@ public class ArgBuySell implements PSCommandArg {
             if (!PSPlayer.fromPlayer(p).hasAmount(r.getPrice()))
                 return PSL.msg(p, PSL.NOT_ENOUGH_MONEY.msg().replace("%price%", new DecimalFormat("#.##").format(r.getPrice())));
 
-            PSL.msg(p, PSL.BUY_SOLD_BUYER.msg()
-                    .replace("%region%", r.getName() == null ? r.getId() : r.getName())
-                    .replace("%price%", String.format("%.2f", r.getPrice()))
-                    .replace("%player%", UUIDCache.getNameFromUUID(r.getLandlord())));
-
-            if (Bukkit.getPlayer(r.getLandlord()) != null) {
-                PSL.msg(Bukkit.getPlayer(r.getLandlord()), PSL.BUY_SOLD_SELLER.msg()
-                        .replace("%region%", r.getName() == null ? r.getId() : r.getName())
-                        .replace("%price%", String.format("%.2f", r.getPrice()))
-                        .replace("%player%", p.getName()));
-            }
-
-            r.sell(p.getUniqueId());
+            r.sell(p);
 
         } else if (args[0].equals("sell")) { // selling
 
