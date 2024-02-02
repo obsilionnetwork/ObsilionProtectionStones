@@ -16,12 +16,15 @@
 package dev.espi.protectionstones;
 
 import com.sk89q.worldedit.math.BlockVector2;
+import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.managers.RemovalStrategy;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import dev.espi.protectionstones.event.PSExchangeEvent;
 import dev.espi.protectionstones.event.PSRemoveEvent;
 import dev.espi.protectionstones.utils.MiscUtil;
 import dev.espi.protectionstones.utils.Objs;
+import dev.espi.protectionstones.utils.UUIDCache;
 import dev.espi.protectionstones.utils.WGUtils;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.*;
@@ -128,12 +131,46 @@ public class PSStandardRegion extends PSRegion {
     }
 
     @Override
-    public void sell(UUID player) {
-        PSPlayer.fromUUID(player).pay(PSPlayer.fromUUID(getLandlord()), getPrice());
+    public void sell(Player player) {
+        UUID uuid = player.getUniqueId();
+        PSExchangeEvent event = new PSExchangeEvent(this, uuid, getLandlord());
+        Bukkit.getPluginManager().callEvent(event);
+
+        if (event.isCancelled()) {
+            PSL.msg(player, PSL.BUY_SOLD_CANCELLED.msg()
+                    .replace("%region%", getName() == null ? getId() : getName()));
+            return;
+        }
+
+        PSL.msg(player, PSL.BUY_SOLD_BUYER.msg()
+                .replace("%region%", getName() == null ? getId() : getName())
+                .replace("%price%", String.format("%.2f", getPrice()))
+                .replace("%player%", UUIDCache.getNameFromUUID(getLandlord())));
+
+        if (Bukkit.getPlayer(getLandlord()) != null) {
+            PSL.msg(Bukkit.getPlayer(getLandlord()), PSL.BUY_SOLD_SELLER.msg()
+                    .replace("%region%", getName() == null ? getId() : getName())
+                    .replace("%price%", String.format("%.2f", getPrice()))
+                    .replace("%player%", player.getName()));
+        }
+
+        PSPlayer.fromUUID(uuid).pay(PSPlayer.fromUUID(getLandlord()), getPrice());
         setSellable(false, null, 0);
         getWGRegion().getOwners().removeAll();
         getWGRegion().getMembers().removeAll();
-        addOwner(player);
+        addOwner(uuid);
+
+        PSProtectBlock options = ProtectionStones.getBlockOptions(getProtectBlock());
+        HashMap<Flag<?>, Object> flags = new HashMap<>(options.regionFlags);
+
+        FlagHandler.initDefaultFlagPlaceholders(flags, player);
+        try {
+            wgregion.setFlags(flags);
+        } catch (Exception e) {
+            ProtectionStones.getPluginLogger().severe(String.format("Region flags have failed to initialize for: %s (%s)", options.alias, options.type));
+            throw e;
+        }
+        FlagHandler.initCustomFlagsForPS(wgregion, getProtectBlock().getLocation(), options);
     }
 
     @Override

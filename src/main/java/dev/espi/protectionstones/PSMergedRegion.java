@@ -152,7 +152,7 @@ public class PSMergedRegion extends PSRegion {
     }
 
     @Override
-    public void sell(UUID player) {
+    public void sell(Player player) {
         mergedGroup.sell(player);
     }
 
