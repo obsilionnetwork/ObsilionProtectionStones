@@ -15,10 +15,7 @@
 
 package dev.espi.protectionstones.commands;
 
-import dev.espi.protectionstones.PSL;
-import dev.espi.protectionstones.PSPlayer;
-import dev.espi.protectionstones.PSRegion;
-import dev.espi.protectionstones.ProtectionStones;
+import dev.espi.protectionstones.*;
 import dev.espi.protectionstones.utils.LimitUtil;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Bukkit;
@@ -81,6 +78,12 @@ public class ArgBuySell implements PSCommandArg {
             // We have to check equality with equals because the uuids are different instances
             if (r.getLandlord().equals(p.getUniqueId())) {
                 return PSL.msg(p, PSL.BUY_BUYER_IS_SELLER.msg());
+            }
+
+            if (r instanceof PSGroupRegion) {
+                if (!p.hasPermission("protectionstones.merge")) {
+                    return PSL.msg(p, PSL.NO_PERMISSION_MERGE.msg());
+                }
             }
 
             // check if player reached region limit
