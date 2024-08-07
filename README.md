@@ -4,7 +4,7 @@
 ![Open issues](https://img.shields.io/github/issues-raw/espidev/ProtectionStones)
 ![Closed issues](https://img.shields.io/github/issues-closed-raw/espidev/ProtectionStones)
 
-[Spigot](https://www.spigotmc.org/resources/protectionstones-updated-for-1-13-1-16-wg7.61797/) | [Permissions](https://github.com/espidev/ProtectionStones/wiki/Permissions) | [Commands](https://github.com/espidev/ProtectionStones/wiki/Commands) | [Configuration](https://github.com/espidev/ProtectionStones/wiki/Configuration) | [Placeholders](https://github.com/espidev/ProtectionStones/wiki/Placeholders) | [Translations](https://github.com/espidev/ProtectionStones/wiki/Translations) | [API Information](https://github.com/espidev/ProtectionStones/wiki/API) | [Javadocs](https://jdps.espi.dev/) | [Dev Builds](https://ci.espi.dev/job/ProtectionStones/)
+[Spigot](https://www.spigotmc.org/resources/protectionstones-updated-for-1-13-1-16-wg7.61797/) | [Permissions](https://espidev.gitbook.io/protectionstones/permissions) | [Commands](https://espidev.gitbook.io/protectionstones/commands) | [Configuration](https://espidev.gitbook.io/protectionstones/configuration) | [Placeholders](https://espidev.gitbook.io/protectionstones/placeholders) | [Translations](https://espidev.gitbook.io/protectionstones/translations) | [API Information](https://espidev.gitbook.io/protectionstones/api) | [Javadocs](https://jdps.espi.dev/) | [Dev Builds](https://ci.espi.dev/job/ProtectionStones/)
 
 Get support for the plugin on the M.O.S.S. Discord! https://discord.gg/cqM96tcJRx
 
@@ -17,16 +17,16 @@ View the Spigot page (with FAQ and install instructions) [here](https://www.spig
 Check the [wiki](https://github.com/espidev/ProtectionStones/wiki) for plugin reference information.
 
 ### Dependencies
-* ProtectionStones 2.10.4
-  * Spigot 1.17+
-  * WorldGuard 7.0.6+
+* ProtectionStones 2.10.5
+  * Spigot 1.20.6+
+  * WorldGuard 7.0.9+
   * WorldEdit 7.2.6+
   * Vault (Optional)
   * PlaceholderAPI (Optional)
   * LuckPerms (Optional)
 
 ### Building
-Make sure you have the Java 16 JDK installed, as well as Maven.
+Make sure you have the Java 21 JDK installed, as well as Maven.
 
 ```
 git clone https://github.com/espidev/ProtectionStones.git
